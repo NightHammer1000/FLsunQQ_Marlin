@@ -1,12 +1,16 @@
+
+# Updated Marlin for FLSun QQ
+
+---
+# !!! DO NOT USE YET !!!
+# !!! NOT FULLY TESTED !!!
+---
+## I am not responsible for any Damage done do your Printer by using this. Using anything else than stock firmware requieres quite some knowlege.
+---
+ 
+
 # Marlin 3D Printer Firmware
 
-[![Build Status](https://travis-ci.org/MarlinFirmware/Marlin.svg?branch=RCBugFix)](https://travis-ci.org/MarlinFirmware/Marlin)
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/2224/badge.svg)](https://scan.coverity.com/projects/2224)
-
-<img align="top" width=175 src="buildroot/share/pixmaps/logo/marlin-250.png" />
-
-Additional documentation can be found at the [Marlin Home Page](http://marlinfw.org/).
-Please test this firmware and let us know if it misbehaves in any way. Volunteers are standing by!
 
 ## Marlin 2.0 Bugfix Branch
 
@@ -21,6 +25,8 @@ Download earlier versions of Marlin on the [Releases page](https://github.com/Ma
 ## Building Marlin 2.0
 
 To build Marlin 2.0 you'll need [Arduino IDE 1.9](https://www.arduino.cc/en/main/software) or [PlatformIO](http://docs.platformio.org/en/latest/ide.html#platformio-ide). We've posted detailed instructions on how to [build Marlin 2.0 for ARM](http://marlinfw.org/docs/basics/install_arm.html).
+
+##Flashing only works on the QQ with disconnected MKS TFT or with USB Conncted only without Power turned on. MKS TFT interferes with the Flashing of the Firmware
 
 ## Hardware Abstraction Layer (HAL)
 
