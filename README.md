@@ -1,18 +1,24 @@
-
 # Updated Marlin for FLSun QQ
 
----
-# !!! DO NOT USE YET !!!
-# !!! NOT FULLY TESTED !!!
----
 ## I am not responsible for any Damage done do your Printer by using this. Using anything else than stock firmware requieres quite some knowlege.
----
 
-__Not for production use. Use with caution!__
+## Flashing only works on the QQ with disconnected MKS TFT or with USB Conncted without Power turned on. MKS TFT interferes with the Flashing of the Firmware because it uses Serial Communication
 
-## Flashing only works on the QQ with disconnected MKS TFT or with USB Conncted only without Power turned on. MKS TFT interferes with the Flashing of the Firmware
+Any Help and Input is appriciated. Just open a Issue.
 
-### [RepRap.org Wiki Page](http://reprap.org/wiki/Marlin)
+## Changes
+ - Updated to lates bugfix2.0
+ - Set the Values for Delta, Steps, Acceleration, Feedrate, etc according to Factory Configuration.h aquired from FLSun Engineer
+ - Activated and Configured Lin_Advance (May needs Value Tuning on your System)
+ - Deactivated the use of the MKS TFT in Favor of a RepRapDiscount Full Graphics Display.  
+ (THIS FIRMWARE DOES NOT WORK WITH THE TFT)  
+Best Practice:  
+[[Display Mount](https://www.thingiverse.com/thing:3058250)]  
+[[Display Case](https://www.thingiverse.com/thing:2368534)]  
+- Preconfigured to use the FLSUN intended Delta Calibration and Bed Leveling Methode.
+  Best not to use the Leveling Plate. Just get a few of those Conductive Cloths form Aliexpress and stick them directly onto the Bed.
+  Make sure the Corners touch the Metal under the Bed to get grounding for the Probe. The Plate with the USB Connection is not needed.
+- Activated UBL for Bedleveling using the Standart QQ Probing Methode. Do it right after Delta Calibration.
 
 ## Credits
 
