@@ -25,7 +25,7 @@
 
 #if ENABLED(SDSUPPORT)
 
-#define SD_RESORT ENABLED(SDCARD_SORT_ALPHA) && ENABLED(SDSORT_DYNAMIC_RAM)
+#define SD_RESORT BOTH(SDCARD_SORT_ALPHA, SDSORT_DYNAMIC_RAM)
 
 #define MAX_DIR_DEPTH     10       // Maximum folder depth
 #define MAXDIRNAMELENGTH   8       // DOS folder name size
@@ -88,7 +88,7 @@ public:
   static int8_t updir();
   static void setroot();
 
-  static const char* diveToFile(SdFile*& curDir, const char * const path, const bool echo);
+  static const char* diveToFile(SdFile*& curDir, const char * const path, const bool echo=false);
 
   static uint16_t get_num_Files();
 
@@ -173,7 +173,7 @@ private:
       static uint8_t sort_order[SDSORT_LIMIT];
     #endif
 
-    #if ENABLED(SDSORT_USES_RAM) && ENABLED(SDSORT_CACHE_NAMES) && DISABLED(SDSORT_DYNAMIC_RAM)
+    #if BOTH(SDSORT_USES_RAM, SDSORT_CACHE_NAMES) && DISABLED(SDSORT_DYNAMIC_RAM)
       #define SORTED_LONGNAME_MAXLEN ((SDSORT_CACHE_VFATS) * (FILENAME_LENGTH) + 1)
     #else
       #define SORTED_LONGNAME_MAXLEN LONG_FILENAME_LENGTH

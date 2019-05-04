@@ -35,8 +35,13 @@ enum MarlinDebugFlags : uint8_t {
   MARLIN_DEBUG_ERRORS        = _BV(2), ///< Not implemented
   MARLIN_DEBUG_DRYRUN        = _BV(3), ///< Ignore temperature setting and E movement commands
   MARLIN_DEBUG_COMMUNICATION = _BV(4), ///< Not implemented
-  MARLIN_DEBUG_LEVELING      = _BV(5), ///< Print detailed output for homing and leveling
-  MARLIN_DEBUG_MESH_ADJUST   = _BV(6), ///< UBL bed leveling
+  #if ENABLED(DEBUG_LEVELING_FEATURE)
+    MARLIN_DEBUG_LEVELING    = _BV(5), ///< Print detailed output for homing and leveling
+    MARLIN_DEBUG_MESH_ADJUST = _BV(6), ///< UBL bed leveling
+  #else
+    MARLIN_DEBUG_LEVELING    = 0,
+    MARLIN_DEBUG_MESH_ADJUST = 0,
+  #endif
   MARLIN_DEBUG_ALL           = 0xFF
 };
 
@@ -49,13 +54,13 @@ extern uint8_t marlin_debug_flags;
   #define _PORT_REDIRECT(n,p)   REMEMBER(n,serial_port_index,p)
   #define _PORT_RESTORE(n)      RESTORE(n)
   #define SERIAL_OUT(WHAT, ...) do{ \
-    if (!serial_port_index || serial_port_index == SERIAL_BOTH) MYSERIAL0.WHAT(__VA_ARGS__); \
-    if ( serial_port_index) MYSERIAL1.WHAT(__VA_ARGS__); \
+    if (!serial_port_index || serial_port_index == SERIAL_BOTH) (void)MYSERIAL0.WHAT(__VA_ARGS__); \
+    if ( serial_port_index) (void)MYSERIAL1.WHAT(__VA_ARGS__); \
   }while(0)
 #else
   #define _PORT_REDIRECT(n,p)   NOOP
   #define _PORT_RESTORE(n)      NOOP
-  #define SERIAL_OUT(WHAT, ...) MYSERIAL0.WHAT(__VA_ARGS__)
+  #define SERIAL_OUT(WHAT, ...) (void)MYSERIAL0.WHAT(__VA_ARGS__)
 #endif
 
 #define PORT_REDIRECT(p)        _PORT_REDIRECT(1,p)
@@ -67,7 +72,7 @@ extern uint8_t marlin_debug_flags;
 #define SERIAL_ECHOLN(x)        SERIAL_OUT(println, x)
 #define SERIAL_PRINT(x,b)       SERIAL_OUT(print, x, b)
 #define SERIAL_PRINTLN(x,b)     SERIAL_OUT(println, x, b)
-#define SERIAL_PRINTF(args...)  SERIAL_OUT(printf, args)
+#define SERIAL_PRINTF(...)      SERIAL_OUT(printf, __VA_ARGS__)
 #define SERIAL_FLUSH()          SERIAL_OUT(flush)
 
 #if TX_BUFFER_SIZE > 0
@@ -169,14 +174,15 @@ inline void serial_echopair_PGM(PGM_P const s_P, void *v)   { serial_echopair_PG
 void serialprintPGM(PGM_P str);
 void serial_echo_start();
 void serial_error_start();
+void serial_ternary(const bool onoff, PGM_P const pre, PGM_P const on, PGM_P const off, PGM_P const post=NULL);
 void serialprint_onoff(const bool onoff);
 void serialprintln_onoff(const bool onoff);
+void serialprint_truefalse(const bool tf);
 void serial_spaces(uint8_t count);
 
 void print_bin(const uint16_t val);
 
-#if ENABLED(DEBUG_LEVELING_FEATURE)
-  void print_xyz(PGM_P const prefix, PGM_P const suffix, const float x, const float y, const float z);
-  void print_xyz(PGM_P const prefix, PGM_P const suffix, const float xyz[]);
-  #define DEBUG_POS(SUFFIX,VAR) do { print_xyz(PSTR("  " STRINGIFY(VAR) "="), PSTR(" : " SUFFIX "\n"), VAR); } while(0)
-#endif
+void print_xyz(PGM_P const prefix, PGM_P const suffix, const float x, const float y, const float z);
+void print_xyz(PGM_P const prefix, PGM_P const suffix, const float xyz[]);
+#define SERIAL_POS(SUFFIX,VAR) do { print_xyz(PSTR("  " STRINGIFY(VAR) "="), PSTR(" : " SUFFIX "\n"), VAR); } while(0)
+#define SERIAL_XYZ(PREFIX,...) do { print_xyz(PSTR(PREFIX), NULL, __VA_ARGS__); } while(0)
